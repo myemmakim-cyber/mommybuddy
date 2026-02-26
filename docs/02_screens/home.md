@@ -1,36 +1,47 @@
-# 홈 화면 템플릿
+# 홈 화면 명세 (Guide Home)
 
 ## 화면 목적
-- 사용자가 오늘의 학습을 바로 시작하게 한다.
+- 엄마가 페이지 캡처를 즉시 시작하도록 돕는다.
+- 최근 생성 가이드와 저장 항목으로 빠르게 재진입하게 한다.
+
+## 핵심 UX 원칙
+- 첫 액션은 `페이지 촬영/업로드`로 단순화한다.
+- 학습 성취 배지/점수/레벨 요소는 노출하지 않는다.
+- 엄마 코치 관점의 조용한 정보 밀도를 유지한다.
 
 ## 주요 구성요소
-- 상단 인사/진행 요약
-- 오늘의 레슨 카드
-- 이어하기 CTA
-- 저장한 레슨 바로가기
+- 상단 헤더: 인사 + 오늘의 읽기 안내
+- 메인 CTA: `페이지 찍고 가이드 만들기`
+- 최근 가이드 섹션: 최근 N개
+- 저장 항목 바로가기
+- 하단 보조 영역: 개인정보/가이드 원칙 링크
 
 ## 상태
 - 기본
 - 로딩
-- 빈 상태(오늘의 레슨 없음)
-- 오류
+- 최근 가이드 없음(Empty)
+- 오류(네트워크/조회 실패)
 
 ## 인터랙션
-- 오늘의 레슨 카드 탭 -> 레슨 화면 이동
-- 저장 바로가기 탭 -> 저장 화면 이동
+- 메인 CTA 탭 -> 캡처 화면 이동
+- 최근 가이드 항목 탭 -> GuideDetail 이동
+- 저장 바로가기 탭 -> 저장 라이브러리 이동
 
 ## 데이터 바인딩
-| UI 요소 | 데이터 키 | 타입 | 비고 |
+| UI 요소 | 데이터 키 | 타입 | 규칙 |
 |---|---|---|---|
-| 인사 문구 | `user.name` | string | TODO |
-| 오늘의 제목 | `todayLesson.title` | string | TODO |
-| 진행률 | `todayLesson.progress` | number | 0~100 |
+| 사용자 이름 | `user.name` | string | 선택 |
+| 최근 가이드 목록 | `recentGuides[]` | array | createdAt desc |
+| 첫 문장 미리보기 | `recentGuides[i].content.sceneInsight` | string | 1~2줄 제한 |
+| 저장 개수 | `saved.total` | number | 0 이상 |
 
 ## 이벤트
 - `screen_home_view`
-- `cta_home_start_lesson_click`
+- `cta_home_capture_click`
+- `cta_home_recent_guide_click`
 - `cta_home_saved_click`
 
 ## QA 체크리스트
-- [ ] 로딩/오류/빈 상태 구분 표시
-- [ ] CTA 탭 영역 44px 이상
+- [ ] 진입 후 1탭 내 캡처 시작 가능
+- [ ] Empty 상태에서 메인 CTA 강조 유지
+- [ ] 최근 가이드 정렬(createdAt desc) 검증
