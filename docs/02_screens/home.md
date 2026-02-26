@@ -1,47 +1,59 @@
-# 홈 화면 명세 (Guide Home)
+# 홈 화면 명세 (Home)
 
 ## 화면 목적
-- 엄마가 페이지 캡처를 즉시 시작하도록 돕는다.
-- 최근 생성 가이드와 저장 항목으로 빠르게 재진입하게 한다.
+- 엄마가 즉시 페이지 캡처를 시작하게 한다.
+- 최근 Guide 재진입 경로를 짧게 제공한다.
 
-## 핵심 UX 원칙
-- 첫 액션은 `페이지 촬영/업로드`로 단순화한다.
-- 학습 성취 배지/점수/레벨 요소는 노출하지 않는다.
-- 엄마 코치 관점의 조용한 정보 밀도를 유지한다.
+## 핵심 UX
+- 첫 화면의 1순위 CTA는 `가이드 만들기`다.
+- 최근 Guide 목록은 재사용성을 높이기 위한 보조 영역이다.
+- 교육 브랜드 톤을 유지하기 위해 자극적 요소 없이 차분한 정보 구조를 사용한다.
 
 ## 주요 구성요소
-- 상단 헤더: 인사 + 오늘의 읽기 안내
+- 상단: 환영 문구 + 오늘의 읽기 안내
 - 메인 CTA: `페이지 찍고 가이드 만들기`
-- 최근 가이드 섹션: 최근 N개
-- 저장 항목 바로가기
-- 하단 보조 영역: 개인정보/가이드 원칙 링크
+- 최근 Guide 목록(최신순)
+- 저장 Guide 바로가기
+- 마이페이지 바로가기
 
 ## 상태
 - 기본
 - 로딩
-- 최근 가이드 없음(Empty)
-- 오류(네트워크/조회 실패)
+- 최근 Guide 없음
+- 오류
 
 ## 인터랙션
-- 메인 CTA 탭 -> 캡처 화면 이동
-- 최근 가이드 항목 탭 -> GuideDetail 이동
-- 저장 바로가기 탭 -> 저장 라이브러리 이동
+- `가이드 만들기` 탭 -> Capture 이동
+- 최근 Guide 항목 탭 -> GuideDetail 이동
+- 저장 Guide 탭 -> Library 이동
+- 마이페이지 탭 -> MyPage 이동
 
 ## 데이터 바인딩
 | UI 요소 | 데이터 키 | 타입 | 규칙 |
 |---|---|---|---|
 | 사용자 이름 | `user.name` | string | 선택 |
-| 최근 가이드 목록 | `recentGuides[]` | array | createdAt desc |
-| 첫 문장 미리보기 | `recentGuides[i].content.sceneInsight` | string | 1~2줄 제한 |
-| 저장 개수 | `saved.total` | number | 0 이상 |
+| 최근 Guide 목록 | `recentGuides[]` | array | createdAt desc |
+| 장면 요약 미리보기 | `recentGuides[i].content.sceneInsight` | string | 1~2줄 |
+| 생성일 | `recentGuides[i].createdAt` | datetime | 로컬 포맷 |
 
 ## 이벤트
 - `screen_home_view`
-- `cta_home_capture_click`
+- `cta_home_create_guide_click`
 - `cta_home_recent_guide_click`
-- `cta_home_saved_click`
+- `cta_home_library_click`
+- `cta_home_mypage_click`
+
+## MVP vs Later
+### MVP
+- 가이드 생성 CTA
+- 최근 Guide 목록
+- 저장/마이페이지 진입
+
+### Later
+- 개인 읽기 루틴 추천
+- 시간대별 읽기 제안
 
 ## QA 체크리스트
-- [ ] 진입 후 1탭 내 캡처 시작 가능
-- [ ] Empty 상태에서 메인 CTA 강조 유지
-- [ ] 최근 가이드 정렬(createdAt desc) 검증
+- [ ] 홈 진입 후 1탭 내 가이드 생성 가능
+- [ ] 최근 목록 정렬(createdAt desc) 검증
+- [ ] 목록 0건 상태에서 CTA 유지

@@ -1,84 +1,93 @@
-# 학습 가이드 상세 화면 명세 (GuideDetail)
+# GuideDetail 화면 명세 (파일 유지: lesson.md)
 
 ## 화면 목적
-- 한 페이지에서 생성된 Guide를 세로 스크롤로 끝까지 읽게 한다.
-- 엄마가 아이와 바로 대화/읽기 확장을 실행하도록 돕는다.
+- 한 페이지에서 생성된 Guide를 세로 스크롤로 끝까지 소비하게 한다.
+- 엄마가 아이와 읽기 대화를 즉시 실행하도록 돕는다.
 
-## 화면 고정 구조 (표시 순서 엄수)
-1. Header (Back + "학습 가이드")
-2. Book Info
-3. Scene Insight
-4. Book Sentences
-5. Key Words
-6. CROW Questions
-7. Supporting Phrases
-8. Parent Tips
+## 화면 구조 (고정 순서)
+1. Book Info (title/date/child age/mom level)
+2. Reading Tips
+3. Book Sentences
+4. Key Words (word only)
+5. Extra Phrases
+6. CROW-based Questions (Completion/Recall/Open-ended/Wh/Distancing + follow-ups)
+7. Parent Strategies
 
-## 섹션별 목적
-### 1) Header
-- 뒤로가기, 저장 토글, 화면 제목 제공
+## 섹션 정의
+### 1) Book Info
+- 노출 항목: 책 제목, 생성일, 아이 연령, 엄마 레벨
+- 목적: 현재 읽기 맥락을 빠르게 정렬
 
-### 2) Book Info
-- 책 제목(있으면), 페이지 인덱스(있으면), 생성 시각 표시
+### 2) Reading Tips
+- 짧고 실전형 읽기 팁 2~4개
+- 목적: 읽기 진행 전에 엄마의 말투/속도/질문 타이밍 정렬
 
-### 3) Scene Insight
-- 장면 핵심을 2~4문장으로 짧게 요약
+### 3) Book Sentences
+- 페이지 핵심 문장 목록
+- 목적: 본문 중심 읽기 기반 확보
 
-### 4) Book Sentences
-- 책 속 핵심 문장 제시
+### 4) Key Words (word only)
+- 단어 중심 노출 (문장형 설명 최소화)
+- 목적: 장면 이해 핵심 어휘 확보
 
-### 5) Key Words
-- 장면 이해에 중요한 단어/의미 제시
+### 5) Extra Phrases
+- 엄마가 자연스럽게 덧붙일 수 있는 짧은 문장
+- 목적: 읽기 확장 대화 유도
 
-### 6) CROW Questions (중앙 섹션)
-- C/R/O/W/D 타입별 질문과 후속 질문 제공
-- 부모-아이 대화 확장을 최우선 목표로 둔다.
+### 6) CROW-based Questions
+- 타입: Completion / Recall / Open-ended / Wh / Distancing
+- 각 메인 질문에 후속 질문 2~4개 포함
+- 목적: 아이의 이해 확장과 사고 연결
 
-### 7) Supporting Phrases
-- 엄마가 바로 따라 말할 수 있는 보조 문장 제공
+### 7) Parent Strategies
+- 짧은 코칭 팁 목록
+- 목적: 엄마의 독서 지도 역량 성장 지원
 
-### 8) Parent Tips
-- 읽기 진행 전략을 짧은 실행 문장으로 제공
-
-## 영어 문장 표시 규칙 (필수)
-- 모든 영어 항목은 아래 3줄 형식으로 노출한다.
+## CRITICAL DISPLAY RULE (MUST)
+- 학습 UI의 모든 영어 문자열은 아래 포맷으로 렌더링한다.
 
 ```text
-English sentence
-▶ (audio button)
-Korean meaning below (muted text)
+English text
+▶ audio
+Korean meaning (small, muted)
 ```
 
 - 적용 대상:
 - Book Sentences
 - Key Words
+- Extra Phrases
 - CROW Questions
 - Follow-up Questions
-- Supporting Phrases
 
 - 금지:
 - 발음기호
-- 한글 발음 표기
+- 발음 텍스트
+
+## 스크롤/레이아웃 규칙
+- 전체 콘텐츠는 단일 세로 스크롤로 제공한다.
+- 섹션 순서는 고정한다.
+- 콘텐츠 숨김/접기 UI를 사용하지 않는다.
 
 ## 인터랙션
-- 세로 스크롤로 전체 섹션 탐색
-- 각 영어 문장의 오디오 버튼 탭(재생/중지, stub 허용)
+- 영어 라인별 오디오 재생 버튼 탭
 - 저장 토글
-- CROW 질문 복사(선택)
+- 뒤로가기
 
 ## 데이터 바인딩
 | UI 요소 | 데이터 키 | 타입 | 규칙 |
 |---|---|---|---|
 | 가이드 ID | `guide.id` | string | 필수 |
-| 책 ID | `guide.bookId` | string/null | MVP nullable |
-| 페이지 인덱스 | `guide.pageIndex` | number/null | MVP nullable |
-| 이미지 URI | `guide.imageUri` | string | 필수 |
-| 장면 핵심 | `guide.content.sceneInsight` | string | 필수 |
-| 책 속 문장 | `guide.content.bookSentences[]` | array | 최소 1개 |
-| 핵심 단어 | `guide.content.keyWords[]` | array | 0개 허용 |
+| 책 제목 | `guide.bookTitle` | string/null | nullable |
+| 생성일 | `guide.createdAt` | datetime | 필수 |
+| 아이 연령 | `guide.childAge` | string/null | nullable |
+| 엄마 레벨 | `guide.momLevel` | string/null | nullable |
+| Reading Tips | `guide.content.readingTips[]` | array | 2~4개 권장 |
+| 문장 목록 | `guide.content.bookSentences[]` | array | 영어/한국어 쌍 |
+| 단어 목록 | `guide.content.keyWords[]` | array | word 중심 |
+| 보조 문장 | `guide.content.extraPhrases[]` | array | 영어/한국어 쌍 |
 | CROW 질문 | `guide.content.crowdQuestions[]` | array | 타입 C/R/O/W/D |
-| 보조 문장 | `guide.content.extraPhrases[]` | array | 0개 허용 |
-| 엄마표 Tip | `guide.content.parentStrategies[]` | array | 최소 1개 권장 |
+| 후속 질문 | `guide.content.crowdQuestions[i].followUps[]` | array | 2~4개 권장 |
+| 부모 전략 | `guide.content.parentStrategies[]` | array | 짧은 문장 |
 
 ## 이벤트
 - `screen_guide_detail_view`
@@ -87,13 +96,23 @@ Korean meaning below (muted text)
 - `cta_guide_save_click`
 - `cta_guide_back_click`
 
+## MVP vs Later
+### MVP
+- 고정 섹션 순서
+- 영어 + 오디오 + 한국어 표시 규칙
+- 저장 기능
+
+### Later
+- 섹션별 개인 선호 반영
+- 오디오 품질 고도화
+
 ## 예외/오류 처리
-- 가이드 조회 실패: 재시도 + 홈 이동 버튼
-- TTS URL 없음: stub 재생 처리 또는 비활성 안내
-- 일부 섹션 비어있음: 섹션은 유지하고 "준비 중" 문구 표기
+- 조회 실패: 재시도 + 홈 이동
+- 오디오 URL 없음: stub 재생 또는 비활성 안내
+- 일부 데이터 비어있음: 섹션 유지 + 대체 문구 표시
 
 ## QA 체크리스트
-- [ ] 섹션 순서 고정 렌더링 검증
-- [ ] 영어 문장 3줄 표시 규칙 100% 적용
-- [ ] 숨김 섹션/아코디언 미사용 검증
-- [ ] 저장 상태 즉시 반영 검증
+- [ ] 섹션 순서 일치 검증
+- [ ] 영어 문자열 표시 규칙 100% 준수
+- [ ] 후속 질문 개수(2~4) 정책 검증
+- [ ] 숨김/접기 UI 미사용 검증

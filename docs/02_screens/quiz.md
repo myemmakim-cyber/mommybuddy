@@ -1,33 +1,33 @@
-# 가이드 생성 진행 화면 명세 (Generate)
+# 생성 화면 명세 (Generate)
 
 ## 화면 목적
-- 캡처한 페이지를 Guide로 변환하는 진행 상태를 명확히 안내한다.
-- 성공 시 GuideDetail로 즉시 연결한다.
+- 페이지 입력을 Guide로 변환하는 진행 상태를 명확히 안내한다.
+- 완료 후 GuideDetail로 자동/즉시 이동시킨다.
 
 ## 주요 구성요소
-- 진행 단계 텍스트: `OCR -> 구조화 -> 가이드 생성`
+- 진행 단계 문구: `OCR -> 구조화 -> Guide 생성`
 - 로딩 인디케이터
-- 실패 시 재시도 버튼
-- 완료 시 `가이드 보기` CTA
+- 실패 메시지 + 재시도
+- 완료 CTA: `가이드 보기`
 
 ## 상태
-- 생성 요청 접수
+- 요청 접수
 - 처리 중
 - 완료
 - 실패
 
 ## 인터랙션
-- 완료 시 `가이드 보기` 탭 -> GuideDetail 이동
-- 실패 시 재시도
-- 취소 시 홈 이동
+- 완료 -> `가이드 보기` 탭 -> GuideDetail 이동
+- 실패 -> 재시도
+- 취소 -> Home 이동
 
 ## 데이터 바인딩
 | UI 요소 | 데이터 키 | 타입 | 규칙 |
 |---|---|---|---|
-| 생성 작업 ID | `generate.jobId` | string | 필수 |
+| 작업 ID | `generate.jobId` | string | 필수 |
 | 상태 | `generate.status` | string | queued/processing/done/failed |
-| 결과 가이드 ID | `generate.guideId` | string | done 시 필수 |
-| 에러 코드 | `generate.errorCode` | string | failed 시 선택 |
+| 결과 Guide ID | `generate.guideId` | string | done 시 필수 |
+| 오류 코드 | `generate.errorCode` | string | failed 시 선택 |
 
 ## 이벤트
 - `screen_generate_view`
@@ -37,7 +37,17 @@
 - `cta_generate_retry_click`
 - `cta_generate_open_guide_click`
 
+## MVP vs Later
+### MVP
+- 생성 진행 상태 표시
+- 완료 후 GuideDetail 연결
+- 실패 재시도
+
+### Later
+- 단계별 예상 소요 시간
+- 백그라운드 생성 알림
+
 ## QA 체크리스트
-- [ ] 상태 전환 문구 일관성
-- [ ] 완료 후 GuideDetail 딥링크 검증
-- [ ] 실패 재시도 후 중복 Guide 생성 방지
+- [ ] 완료 시 GuideDetail 이동 검증
+- [ ] 실패 재시도 시 중복 생성 방지
+- [ ] 상태 문구 일관성 검증

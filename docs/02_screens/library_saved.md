@@ -1,14 +1,18 @@
-# 저장 항목 화면 명세 (Saved Guides)
+# 라이브러리 화면 명세 (Library)
 
 ## 화면 목적
-- 엄마가 다시 보고 싶은 Guide를 모아 재사용한다.
-- 대화 준비가 필요한 순간에 즉시 재진입하게 한다.
+- 사용자의 Guide를 페이지 단위로 저장/탐색한다.
+- 다시 읽을 페이지를 빠르게 찾도록 돕는다.
+
+## 핵심 원칙
+- MVP에서는 Guide를 페이지 단위로 노출한다.
+- Book 단위 자동 그룹핑은 이후 단계에서 제안형으로 확장한다.
 
 ## 주요 구성요소
-- 저장 Guide 목록
-- 검색(책 제목/장면 키워드)
-- 정렬(최신순 기본)
-- 저장 해제 액션
+- Guide 목록(최신순)
+- 검색(제목/장면 키워드)
+- 필터(최근/전체)
+- 저장 해제 또는 보관 관리
 
 ## 상태
 - 기본
@@ -17,25 +21,36 @@
 - 오류
 
 ## 인터랙션
-- 목록 항목 탭 -> GuideDetail 이동
-- 저장 해제
+- 항목 탭 -> GuideDetail 이동
 - 검색어 입력
+- 저장 상태 변경
 
 ## 데이터 바인딩
 | UI 요소 | 데이터 키 | 타입 | 규칙 |
 |---|---|---|---|
-| 저장 목록 | `saved.guides[]` | array | 최신순 기본 |
-| 가이드 제목 | `saved.guides[i].content.sceneInsight` | string | 1줄 요약 |
-| 페이지 인덱스 | `saved.guides[i].pageIndex` | number/null | nullable |
-| 저장 시각 | `saved.guides[i].savedAt` | datetime | 필수 |
+| 목록 | `library.guides[]` | array | page-based |
+| Guide ID | `library.guides[i].id` | string | 필수 |
+| 생성일 | `library.guides[i].createdAt` | datetime | 최신순 |
+| 책 제목 | `library.guides[i].bookTitle` | string/null | nullable |
+| 페이지 인덱스 | `library.guides[i].pageIndex` | number/null | nullable |
+| 장면 요약 | `library.guides[i].content.sceneInsight` | string | 1~2줄 |
 
 ## 이벤트
-- `screen_saved_guides_view`
-- `cta_saved_guide_click`
-- `cta_saved_remove_click`
-- `saved_search_used`
+- `screen_library_view`
+- `cta_library_guide_click`
+- `library_search_used`
+- `cta_library_save_toggle_click`
+
+## MVP vs Later
+### MVP
+- 페이지 기반 Guide 리스트
+- 검색/재진입
+
+### Later
+- AI Book 그룹 제안
+- 사용자 그룹 수정(override)
 
 ## QA 체크리스트
-- [ ] 저장 해제 즉시 목록 반영
-- [ ] 검색 결과 0건 상태 노출
-- [ ] GuideDetail 재진입 경로 검증
+- [ ] 사용자 소유 Guide만 노출
+- [ ] createdAt 정렬 검증
+- [ ] Book 정보 nullable 처리 검증
